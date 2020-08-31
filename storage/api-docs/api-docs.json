@@ -1,0 +1,351 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "cart-service",
+        "description": "Cart Swagger Documentation",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "/"
+        }
+    ],
+    "paths": {
+        "/health": {
+            "get": {
+                "tags": [
+                    "healthcheck"
+                ],
+                "summary": "Health",
+                "operationId": "health",
+                "responses": {
+                    "200": {
+                        "description": "Empty response"
+                    }
+                }
+            }
+        },
+        "/heartbeat": {
+            "get": {
+                "tags": [
+                    "healthcheck"
+                ],
+                "summary": "Heartbeat",
+                "operationId": "heartbeat",
+                "responses": {
+                    "200": {
+                        "description": "Empty response"
+                    }
+                }
+            }
+        },
+        "/version": {
+            "get": {
+                "tags": [
+                    "healthcheck"
+                ],
+                "summary": "Version",
+                "description": "Returns app version",
+                "operationId": "version",
+                "responses": {
+                    "200": {
+                        "description": "Returns app version"
+                    }
+                }
+            }
+        },
+        "/api/v1/cart": {
+            "post": {
+                "tags": [
+                    "carts"
+                ],
+                "summary": "Create a cart",
+                "description": "Returns a created cart",
+                "operationId": "cart",
+                "responses": {
+                    "200": {
+                        "description": "Returns a created cart"
+                    }
+                }
+            }
+        },
+        "/api/v1/cart/{cartId}": {
+            "get": {
+                "tags": [
+                    "carts"
+                ],
+                "summary": "Returns a cart",
+                "operationId": "readCart",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "cartId",
+                        "in": "path",
+                        "description": "ID of cart to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Cart"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Invalid product"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "carts"
+                ],
+                "summary": "Updates a cart",
+                "operationId": "updateCart",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "cartId",
+                        "in": "path",
+                        "description": "ID of cart that needs to be updated",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Input data format",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "product_id": {
+                                        "type": "integer"
+                                    },
+                                    "amount": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Cart"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cart not found"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    },
+                    "415": {
+                        "description": "Unsupported Media Type"
+                    }
+                }
+            }
+        },
+        "/api/v1/product/{productId}": {
+            "delete": {
+                "tags": [
+                    "carts"
+                ],
+                "summary": "Deletes a product from a cart",
+                "operationId": "deleteProductFromCart",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "Product id to delete from a cart",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success, no content",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Cart": {
+                "title": "Cart model",
+                "description": "Cart model",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
+                    "total_price": {
+                        "title": "Total price",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "currency": {
+                        "title": "Currency",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "CartProduct": {
+                "title": "Cart product model",
+                "description": "Cart product model",
+                "properties": {
+                    "product_id": {
+                        "title": "Product id",
+                        "type": "integer"
+                    },
+                    "product_name": {
+                        "title": "Product name",
+                        "type": "string"
+                    },
+                    "product_price": {
+                        "title": "Price",
+                        "type": "string"
+                    },
+                    "product_currency": {
+                        "title": "Currency",
+                        "type": "string"
+                    },
+                    "amount": {
+                        "title": "Amount",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "ValidationErrors": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "The given data was invalid."
+                    },
+                    "errors": {
+                        "properties": {
+                            "parameter": {
+                                "description": "Key: request parameter name, value: array of parameter validation errors.",
+                                "type": "array",
+                                "items": {
+                                    "example": "[The order details field is required.]"
+                                }
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "CartProductResource": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/CartProduct"
+                    }
+                },
+                "type": "object"
+            },
+            "CartResource": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/Cart"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "healthcheck"
+        },
+        {
+            "name": "carts"
+        }
+    ]
+}

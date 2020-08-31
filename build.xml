@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="service" default="test">
+
+    <target name="test"
+            depends="test-syntax, test-standards, test-duplicates, test-phpunit, test-phpmd"/>
+
+    <!-- Run code syntax test using PHP Parallel Lint -->
+    <target name="test-syntax">
+        <exec dir="."
+              command="vendor/bin/parallel-lint app"
+              passthru="true"
+              checkreturn="true"
+              output="/dev/stdout"/>
+    </target>
+
+    <!-- Run code standards test using PHP_CodeSniffer -->
+    <target name="test-standards">
+        <exec dir="."
+              command="vendor/bin/phpcs -ps"
+              passthru="true"
+              checkreturn="true"
+              output="/dev/stdout"/>
+    </target>
+
+    <!-- Run code duplicates test using PHP Copy/Paste Detector (PHPCPD) -->
+    <target name="test-duplicates">
+        <exec dir="."
+              command="vendor/bin/phpcpd app"
+              passthru="true"
+              checkreturn="true"
+              output="/dev/stdout"/>
+    </target>
+
+    <!--Run tests using PHPUnit -->
+    <target name="test-phpunit">
+        <exec dir="."
+              command="vendor/bin/phpunit"
+              passthru="true"
+              checkreturn="true"
+              output="/dev/stdout"/>
+    </target>
+
+    <target name="test-phpmd">
+        <exec dir="."
+              command="vendor/bin/phpmd ./app text ./phpmd.xml"
+              passthru="true"
+              checkreturn="true"
+              output="/dev/stdout"/>
+    </target>
+</project>

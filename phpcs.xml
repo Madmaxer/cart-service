@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<ruleset name="Coding standard">
+
+    <description>Coding standard</description>
+
+    <!-- Installed non-standard rulesets -->
+    <config name="installed_paths" value="vendor/slevomat/coding-standard"/>
+
+    <!-- Directories and files to check -->
+    <file>app</file>
+
+    <!-- Rules -->
+    <rule ref="PSR2"/>
+    <rule ref="SlevomatCodingStandard.TypeHints.TypeHintDeclaration">
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversablePropertyTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment"/>
+    </rule>
+
+</ruleset>
