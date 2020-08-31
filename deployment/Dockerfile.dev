@@ -1,0 +1,11 @@
+FROM cart-service
+RUN apk add --update --no-cache --virtual htop \
+    autoconf \
+    gcc \
+    libgcc \
+    make \
+    g++ \
+    curl \
+    && pecl install xdebug-2.7.1 && docker-php-ext-enable xdebug
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+COPY ./deployment/config/php-fpm/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
